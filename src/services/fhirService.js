@@ -1,11 +1,20 @@
 // src/services/fhirService.js
 import axios from 'axios';
 
-const BASE_URL = 'http://hapi.fhir.org/baseR4';
+const BASE_URL = 'http://localhost:8080/fhir';
 
-export const getPatients = async (page = 1, count = 10) => {
+export const getPatients = async (page = 1, count = 10, name = '', phone = '') => {
   const offset = (page - 1) * count;
-  const url = `${BASE_URL}/Patient?_sort=-_lastUpdated&_count=${count}&_getpagesoffset=${offset}&_total=accurate`;
+  let url = `${BASE_URL}/Patient?_sort=-_lastUpdated&_count=${count}&_getpagesoffset=${offset}&_total=accurate`;
+
+  if (name) {
+    url += `&name=${name}`;
+  }
+
+  if (phone) {
+    url += `&telecom:contains=${phone}`;
+  }
+
   try {
     const response = await axios.get(url);
     return response.data;

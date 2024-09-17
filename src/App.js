@@ -9,6 +9,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route exact path="/" element={<PatientList />} />
+        <Route exact path="/patients" element={<PatientList />} />
         <Route path="/patient/new" element={<PatientDetails />} />
         <Route path="/patient/:id" element={<PatientDetails />} />
       </Routes>
