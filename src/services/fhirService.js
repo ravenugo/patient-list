@@ -5,7 +5,7 @@ const BASE_URL = 'http://hapi.fhir.org/baseR4';
 
 export const getPatients = async (page = 1, count = 10) => {
   const offset = (page - 1) * count;
-  const url = `${BASE_URL}/Patient?_sort=-_lastUpdated&_count=${count}&_getpagesoffset=${offset}`;
+  const url = `${BASE_URL}/Patient?_sort=-_lastUpdated&_count=${count}&_getpagesoffset=${offset}&_total=accurate`;
   try {
     const response = await axios.get(url);
     return response.data;
