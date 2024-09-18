@@ -5,6 +5,7 @@ import { getPatient } from '../services/fhirService';
 import '../App.css'; // Import global CSS
 import './PatientDetails.css'; // Import component-specific CSS
 import DemographicInformation from './DemographicInformation'; // Import the DemographicInformation component
+import LeftNav from './LeftNav'; // Import the LeftNav component
 
 const PatientDetails = () => {
   const { patientId } = useParams();
@@ -35,14 +36,17 @@ const PatientDetails = () => {
   };
 
   return (
-    <div className="patient-details">
-      <h1> {patient ? `${patient.name[0]?.given[0]} ${patient.name[0]?.family}` : 'Loading...'}</h1>
-      <div className="tabs">
-        <button className={activeTab === 'overview' ? 'active' : ''} onClick={() => setActiveTab('overview')}>Overview</button>
-        {/* Add more tabs as needed */}
-      </div>
-      <div className="tab-content">
-        {renderTabContent()}
+    <div className="app-container">
+      <LeftNav /> {/* Render the LeftNav component */}
+      <div className="content-container">
+        <h1> {patient ? `${patient.name[0]?.given[0]} ${patient.name[0]?.family}` : 'Loading...'}</h1>
+        <div className="tabs">
+            <button className={activeTab === 'overview' ? 'active' : ''} onClick={() => setActiveTab('overview')}>Overview</button>
+            {/* Add more tabs as needed */}
+        </div>
+        <div className="tab-content">
+            {renderTabContent()}
+        </div>
       </div>
     </div>
   );

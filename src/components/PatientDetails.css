@@ -1,5 +1,12 @@
-.patient-details {
+  .app-container {
+    display: flex;
+  }
+
+  .content-container {
+    margin-left: 220px; /* Adjust this value based on the width of your left nav */
     padding: 20px;
+    width: calc(100% - 220px); /* Adjust this value based on the width of your left nav */
+    text-align: left; /* Ensure text is left-aligned */
   }
   
   .tabs {
