@@ -45,10 +45,11 @@ const PatientList = () => {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModalAndRefresh = () => {
     setIsModalOpen(false);
     setModalContent(null);
     setSelectedPatientId(null);
+    fetchPatients(currentPage, searchName, searchPhone); // Refresh the patient list
   };
 
   const debouncedFetchPatients = useMemo(
@@ -134,13 +135,12 @@ const PatientList = () => {
         />
         <Modal
           isOpen={isModalOpen}
-          onRequestClose={closeModal}
+          onRequestClose={() => setIsModalOpen(false)}
           contentLabel="Patient Modal"
         >
-          {modalContent === 'create' && <PatientDetails mode="create" />}
-          {modalContent === 'edit' && <PatientDetails mode="edit" patientId={selectedPatientId} />}
-          <button onClick={closeModal}>Close</button>
-        </Modal>
+          {modalContent === 'create' && <PatientDetails mode="create" onSuccess={closeModalAndRefresh} />}
+          {modalContent === 'edit' && <PatientDetails mode="edit" patientId={selectedPatientId} onSuccess={closeModalAndRefresh} />}
+          </Modal>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { getPatient, updatePatient, createPatient } from '../services/fhirServic
 import '../App.css'; // Import global CSS
 import './PatientDetails.css'; // Import component-specific CSS
 
-const PatientDetails = ({ mode, patientId }) => {
+const PatientDetails = ({ mode, patientId, onSuccess }) => {
   const [patient, setPatient] = useState({
     name: [{ given: [''], family: '' }],
     gender: '',
@@ -60,7 +60,7 @@ const PatientDetails = ({ mode, patientId }) => {
       } else {
         await createPatient(patient);
       }
-      // Handle success (e.g., close modal, show success message)
+      onSuccess(); // Call the onSuccess callback to close the modal and refresh the parent page
     } catch (error) {
       console.error('Error saving patient:', error);
     }
