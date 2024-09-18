@@ -1,0 +1,13 @@
+.demographic-information {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .demographic-information div {
+    margin-bottom: 10px;
+  }
+  
+  .demographic-information label {
+    font-weight: bold;
+    margin-right: 10px;
+  }

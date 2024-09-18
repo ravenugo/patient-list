@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getPatients } from '../services/fhirService';
 import ReactPaginate from 'react-paginate';
 import { debounce } from 'lodash';
@@ -19,6 +20,7 @@ const PatientList = () => {
   const [modalContent, setModalContent] = useState(null);
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const patientsPerPage = 10;
+  const navigate = useNavigate();
 
 
   const fetchPatients = async (page, name, phone) => {
@@ -71,6 +73,11 @@ const PatientList = () => {
     debouncedFetchPatients(searchName, value);
   };
 
+  const handleOpenPatientDetails = (patientId) => {
+    navigate(`/patients/${patientId}`);
+  };
+
+
   return (
     <div className="app-container">
       <LeftNav /> {/* Include the LeftNav component */}
@@ -114,7 +121,8 @@ const PatientList = () => {
                   <td>{formattedDOB}</td>
                   <td>{formattedLastUpdated}</td>
                   <td>
-                  <button onClick={() => openModal('edit', patient.id)}>Edit</button>
+                    <button onClick={() => handleOpenPatientDetails(patient.id)}>Open</button> 
+                    <button onClick={() => openModal('edit', patient.id)}>Edit</button>
                   </td>
                 </tr>
               );
