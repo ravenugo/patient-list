@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getPatient, updatePatient, createPatient } from '../services/fhirService';
 import '../App.css'; // Import global CSS
-import './PatientDetails.css'; // Import component-specific CSS
+import './PatientCreateUpdateForm.css'; // Import component-specific CSS
 
 const PatientDetails = ({ mode, patientId, onSuccess }) => {
   const [patient, setPatient] = useState({

@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PatientList from './components/PatientList';
-import PatientDetails from './components/PatientDetails';
+import PatientDetails from './components/PatientCreateUpdateForm';
 
 const App = () => {
   return (

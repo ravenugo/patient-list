@@ -6,7 +6,7 @@ import LeftNav from './LeftNav'; // Import the LeftNav component
 import '../App.css'; // Import global CSS
 import './PatientList.css'; // Import component-specific CSS
 import Modal from 'react-modal';
-import PatientDetails from './PatientDetails'; // Import the PatientDetails component
+import PatientDetails from './PatientCreateUpdateForm'; // Import the PatientDetails component
 
 
 const PatientList = () => {
