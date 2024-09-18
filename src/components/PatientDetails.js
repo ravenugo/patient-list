@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { getPatient, updatePatient, createPatient } from '../services/fhirService';
 import '../App.css'; // Import global CSS
 import './PatientDetails.css'; // Import component-specific CSS
 
-const PatientDetails = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+const PatientDetails = ({ mode, patientId }) => {
   const [patient, setPatient] = useState({
     name: [{ given: [''], family: '' }],
     gender: '',
@@ -15,10 +12,10 @@ const PatientDetails = () => {
   });
 
   useEffect(() => {
-    if (id) {
+    if (mode === 'edit' && patientId) {
       const fetchPatient = async () => {
         try {
-          const data = await getPatient(id);
+          const data = await getPatient(patientId);
           setPatient(data);
         } catch (error) {
           console.error('Error fetching patient:', error);
@@ -26,7 +23,7 @@ const PatientDetails = () => {
       };
       fetchPatient();
     }
-  }, [id]);
+  }, [mode, patientId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,12 +55,12 @@ const PatientDetails = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (id) {
-        await updatePatient(id, patient);
+      if (mode === 'edit') {
+        await updatePatient(patientId, patient);
       } else {
         await createPatient(patient);
       }
-      navigate('/');
+      // Handle success (e.g., close modal, show success message)
     } catch (error) {
       console.error('Error saving patient:', error);
     }
@@ -71,7 +68,7 @@ const PatientDetails = () => {
 
   return (
     <div>
-      <h1>{id ? 'Edit Patient' : 'Create Patient'}</h1>
+      <h1>{mode === 'edit' ? 'Edit Patient' : 'Create Patient'}</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label>First Name:</label>
@@ -118,7 +115,7 @@ const PatientDetails = () => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">{id ? 'Update' : 'Create'}</button>
+        <button type="submit">{mode === 'edit' ? 'Update' : 'Create'}</button>
       </form>
     </div>
   );

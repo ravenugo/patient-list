@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { getPatients } from '../services/fhirService';
 import ReactPaginate from 'react-paginate';
 import { debounce } from 'lodash';
 import LeftNav from './LeftNav'; // Import the LeftNav component
 import '../App.css'; // Import global CSS
 import './PatientList.css'; // Import component-specific CSS
+import Modal from 'react-modal';
+import PatientDetails from './PatientDetails'; // Import the PatientDetails component
+
 
 const PatientList = () => {
   const [patients, setPatients] = useState([]);
@@ -13,8 +15,11 @@ const PatientList = () => {
   const [totalPatients, setTotalPatients] = useState(0);
   const [searchName, setSearchName] = useState('');
   const [searchPhone, setSearchPhone] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
+  const [selectedPatientId, setSelectedPatientId] = useState(null);
   const patientsPerPage = 10;
-  const navigate = useNavigate();
+
 
   const fetchPatients = async (page, name, phone) => {
     try {
@@ -34,12 +39,16 @@ const PatientList = () => {
     setCurrentPage(data.selected + 1); // ReactPaginate uses 0-based index
   };
 
-  const handleCreatePatient = () => {
-    navigate('/patient/new');
+  const openModal = (content, patientId = null) => {
+    setModalContent(content);
+    setSelectedPatientId(patientId);
+    setIsModalOpen(true);
   };
 
-  const handleEditPatient = (id) => {
-    navigate(`/patient/${id}`);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalContent(null);
+    setSelectedPatientId(null);
   };
 
   const debouncedFetchPatients = useMemo(
@@ -66,7 +75,7 @@ const PatientList = () => {
       <LeftNav /> {/* Include the LeftNav component */}
       <div className="content-container">
         <h1>Patients</h1>
-        <button onClick={handleCreatePatient}>Create Patient</button>
+        <button onClick={() => openModal('create')}>Create Patient</button>
         <div className="search-container">
           <input
             type="text"
@@ -104,7 +113,7 @@ const PatientList = () => {
                   <td>{formattedDOB}</td>
                   <td>{formattedLastUpdated}</td>
                   <td>
-                    <button onClick={() => handleEditPatient(patient.id)}>Edit</button>
+                  <button onClick={() => openModal('edit', patient.id)}>Edit</button>
                   </td>
                 </tr>
               );
@@ -123,6 +132,15 @@ const PatientList = () => {
           containerClassName={'pagination'}
           activeClassName={'active'}
         />
+        <Modal
+          isOpen={isModalOpen}
+          onRequestClose={closeModal}
+          contentLabel="Patient Modal"
+        >
+          {modalContent === 'create' && <PatientDetails mode="create" />}
+          {modalContent === 'edit' && <PatientDetails mode="edit" patientId={selectedPatientId} />}
+          <button onClick={closeModal}>Close</button>
+        </Modal>
       </div>
     </div>
   );
