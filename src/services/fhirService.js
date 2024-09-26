@@ -46,7 +46,8 @@ export const updatePatient = async (id, patient) => {
 
 export const createPatient = async (patient) => {
   try {
-    const response = await axios.post(`${BASE_URL}/Patient`, patient);
+    const patientWithResourceType = { ...patient, resourceType: 'Patient' };
+    const response = await axios.post(`${BASE_URL}/Patient`, patientWithResourceType);
     return response.data;
   } catch (error) {
     console.error('Error creating patient:', error);
