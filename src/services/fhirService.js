@@ -1,6 +1,7 @@
 // src/services/fhirService.js
 import axios from 'axios';
 
+//const BASE_URL = 'https://hapi.fhir.org/baseR4';
 const BASE_URL = 'http://localhost:8080/fhir';
 
 export const getPatients = async (page = 1, count = 10, name = '', phone = '') => {
